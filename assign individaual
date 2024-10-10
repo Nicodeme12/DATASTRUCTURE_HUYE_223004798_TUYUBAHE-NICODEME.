@@ -1,0 +1,42 @@
+from collections import deque
+
+class DonationDistributionSystem:
+    def __init__(self):
+        self.undo_stack = [] 
+        self.distribution_queue = deque() 
+        self.items_list = [] 
+
+    def add_item(self, item):
+        self.items_list.append(item)
+        print(f"Item '{item}' added to the tracking list.")
+
+    def distribute_item(self):
+        if not self.items_list:
+            print("No items available for distribution.")
+            return
+        item = self.items_list.pop(0)
+        self.distribution_queue.append(item)
+        self.undo_stack.append(item)
+        print(f"Item '{item}' added to the distribution queue.")
+
+    def process_distribution(self):
+        if not self.distribution_queue:
+            print("No items in the distribution queue.")
+            return
+        item = self.distribution_queue.popleft()
+        print(f"Item '{item}' distributed.")
+
+    def undo_distribution(self):
+        if not self.undo_stack:
+            print("No distribution orders to undo.")
+            return
+        item = self.undo_stack.pop()
+        self.items_list.insert(0, item)
+        print(f"Distribution of item '{item}' undone and added back to the tracking list.")
+
+system = DonationDistributionSystem()
+system.add_item("shoes")
+system.add_item("air force")
+system.distribute_item()
+system.process_distribution()
+system.undo_distribution()
